@@ -1,0 +1,53 @@
+{
+    "name": "developifynet/leopardscod-php",
+    "description": "Leopards Courier COD (Cash on Delivery) API Wrapper for PHP",
+    "license": "MIT",
+    "keywords": [
+        "leopards",
+        "leopardscourier",
+        "leopardscod",
+        "leopards-courier",
+        "leopards-php",
+        "leopards-courier-php",
+        "leopardscourierphp",
+        "leopards-cod",
+        "leopards-cod-php",
+        "api",
+        "php",
+        "package",
+        "sdk-php",
+        "sdk"
+    ],
+    "authors": [
+        {
+            "name": "Mustafa Mughal",
+            "email": "efficientbit@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "~5.0",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "dev-master",
+        "phpunit/phpunit": "^6.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "Developifynet\\LeopardsCOD": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Developifynet\\LeopardsCOD\\LeopardsCODServiceProvider"
+            ],
+            "aliases": {
+                "LeopardsCOD": "Developifynet\\LeopardsCOD\\LeopardsCOD"
+            }
+        }
+    }
+}

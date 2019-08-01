@@ -1,37 +1,250 @@
-## Welcome to GitHub Pages
+# Leopards Courier COD (Cash on Delivery) API Wrapper for PHP
 
-You can use the [editor on GitHub](https://github.com/developifynet/leopardscod-php/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+<a href="https://travis-ci.org/developifynet/leopardscod-php"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/developifynet/leopardscod-php"><img src="https://poser.pugx.org/developifynet/leopardscod-php/d/total.svg" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/developifynet/leopardscod-php"><img src="https://poser.pugx.org/developifynet/leopardscod-php/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/developifynet/leopardscod-php"><img src="https://poser.pugx.org/developifynet/leopardscod-php/license.svg" alt="License"></a>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+This composer package offers quick booking packets via APIs on Leopards COD (Cash on Delivery) for your Laravel applications.
 
-### Markdown
+## Installation
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Begin by pulling in the package through Composer.
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```bash
+composer require developifynet/leopardscod-php
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Laravel Framework Usage
 
-### Jekyll Themes
+Within your controllers, you can call LeopardsCOD facade and can send perform different operations.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/developifynet/leopardscod-php/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Set Credentials
 
-### Support or Contact
+```php
+use \Developifynet\LeopardsCOD\LeopardsCOD;
+public function index()
+{
+    $leopards = LeopardsCOD(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ));
+}
+```
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+or using 'setCredentials'
+
+```php
+use \Developifynet\LeopardsCOD\LeopardsCOD;
+public function index()
+{
+    LeopardsCOD::setCredentials(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ));
+}
+```
+
+or setting up with data. See below endpoints where credentials are porvided within function data
+
+
+### Get All Cities
+
+```php
+use \Developifynet\LeopardsCOD\LeopardsCOD;
+public function index()
+{
+    $leopards = LeopardsCOD::setCredentials(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ));
+    
+    $response = $leopards->getAllCities();
+}
+```
+
+### Book a Packet
+
+```php
+use \Developifynet\LeopardsCOD\LeopardsCOD;
+public function index()
+{
+    $leopards = LeopardsCOD::setCredentials(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ));
+    
+    $response = $leopards->bookPacket(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+        'booked_packet_weight' => '200',
+        'booked_packet_vol_weight_w' => '',
+        'booked_packet_vol_weight_h' => '',
+        'booked_packet_vol_weight_l' => '',
+        'booked_packet_no_piece' => '1',
+        'booked_packet_collect_amount' => '1000',
+        'booked_packet_order_id' => '1001',
+        'origin_city' => 'string',                  /** Params: 'self' or 'integer_value' e.g. 'origin_city' => 'self' or 'origin_city' => 789 (where 789 is Lahore ID)
+                                                     * If 'self' is used then Your City ID will be used.
+                                                     * 'integer_value' provide integer value (for integer values read 'Get All Cities' api documentation)
+                                                     */
+            
+        'destination_city' => 'string',             /** Params: 'self' or 'integer_value' e.g. 'destination_city' => 'self' or 'destination_city' => 789 (where 789 is Lahore ID)
+                                                     * If 'self' is used then Your City ID will be used.
+                                                     * 'integer_value' provide integer value (for integer values read 'Get All Cities' api documentation) 
+                                                     */
+        // Shipper Information
+        'shipment_name_eng' => 'self',
+        'shipment_email' => 'self',
+        'shipment_phone' => 'self',
+        'shipment_address' => 'self',
+        // Consingee Information
+        'consignment_name_eng' => 'John Doe',
+        'consignment_email' => 'johndoe@example.com',
+        'consignment_phone' => '+923330000000',
+        'consignment_address' => 'Test Address is used here',
+        'special_instructions' => 'n/a',
+     ));
+}
+```
+
+### Track Packet(s)
+
+```php
+use \Developifynet\LeopardsCOD\LeopardsCOD;
+public function index()
+{
+    $leopards = LeopardsCOD::setCredentials(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ));
+    
+    $response = $leopards->trackPacket(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+        'track_numbers' => 'LEXXXXXXXX',            // E.g. 'XXYYYYYYYY' OR 'XXYYYYYYYY,XXYYYYYYYY,XXYYYYYY' 10 Digits each number
+     ));
+}
+```
+
+## Other Usage
+
+Within your controllers, you can call LeopardsCODClient Object and call approperiate functions for your need.
+
+You can set credentials in various ways. See below
+
+### Set Credentials
+
+```php
+use \Developifynet\LeopardsCOD\LeopardsCODClient;
+public function index()
+{
+    $leopards = new LeopardsCODClient(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ));
+}
+```
+
+or using 'setCredentials'
+
+```php
+use \Developifynet\LeopardsCOD\LeopardsCODClient;
+public function index()
+{
+    $leopards = new LeopardsCODClient();
+    
+    $leopards->setCredentials(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ));
+}
+```
+
+or setting up with data. See below endpoints where credentials are porvided within function data
+
+
+### Get All Cities
+
+```php
+use \Developifynet\LeopardsCOD\LeopardsCODClient;
+public function index()
+{
+    $leopards = new LeopardsCODClient();
+    
+    $response = $leopards->getAllCities(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ));
+}
+```
+
+### Book a Packet
+
+```php
+use \Developifynet\LeopardsCOD\LeopardsCODClient;
+public function index()
+{
+    $leopards = new LeopardsCODClient();
+    
+    $response = $leopards->bookPacket(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+        'booked_packet_weight' => '200',
+        'booked_packet_vol_weight_w' => '',
+        'booked_packet_vol_weight_h' => '',
+        'booked_packet_vol_weight_l' => '',
+        'booked_packet_no_piece' => '1',
+        'booked_packet_collect_amount' => '1000',
+        'booked_packet_order_id' => '1001',
+        'origin_city' => 'string',                  /** Params: 'self' or 'integer_value' e.g. 'origin_city' => 'self' or 'origin_city' => 789 (where 789 is Lahore ID)
+                                                     * If 'self' is used then Your City ID will be used.
+                                                     * 'integer_value' provide integer value (for integer values read 'Get All Cities' api documentation)
+                                                     */
+            
+        'destination_city' => 'string',             /** Params: 'self' or 'integer_value' e.g. 'destination_city' => 'self' or 'destination_city' => 789 (where 789 is Lahore ID)
+                                                     * If 'self' is used then Your City ID will be used.
+                                                     * 'integer_value' provide integer value (for integer values read 'Get All Cities' api documentation) 
+                                                     */
+        // Shipper Information
+        'shipment_name_eng' => 'self',
+        'shipment_email' => 'self',
+        'shipment_phone' => 'self',
+        'shipment_address' => 'self',
+        // Consingee Information
+        'consignment_name_eng' => 'John Doe',
+        'consignment_email' => 'johndoe@example.com',
+        'consignment_phone' => '+923330000000',
+        'consignment_address' => 'Test Address is used here',
+        'special_instructions' => 'n/a',
+     ));
+}
+```
+
+### Track Packet(s)
+
+```php
+use \Developifynet\LeopardsCOD\LeopardsCODClient;
+public function index()
+{
+    $leopards = new LeopardsCODClient();
+    
+    $response = $leopards->trackPacket(array(
+        'api_key' => '<your_api_key>',              // API Key provided by LCS
+        'api_password' => '<your_api_password>',    // API Password provided by LCS
+        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+        'track_numbers' => 'LEXXXXXXXX',            // E.g. 'XXYYYYYYYY' OR 'XXYYYYYYYY,XXYYYYYYYY,XXYYYYYY' 10 Digits each number
+     ));
+}
+```
