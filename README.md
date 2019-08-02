@@ -25,20 +25,6 @@ Within your controllers, you can call LeopardsCOD facade and can send perform di
 use \Developifynet\LeopardsCOD\LeopardsCOD;
 public function index()
 {
-    $leopards = LeopardsCOD(array(
-        'api_key' => '<your_api_key>',              // API Key provided by LCS
-        'api_password' => '<your_api_password>',    // API Password provided by LCS
-        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
-    ));
-}
-```
-
-or using 'setCredentials'
-
-```php
-use \Developifynet\LeopardsCOD\LeopardsCOD;
-public function index()
-{
     LeopardsCOD::setCredentials(array(
         'api_key' => '<your_api_key>',              // API Key provided by LCS
         'api_password' => '<your_api_password>',    // API Password provided by LCS
@@ -56,13 +42,11 @@ or setting up with data. See below endpoints where credentials are porvided with
 use \Developifynet\LeopardsCOD\LeopardsCOD;
 public function index()
 {
-    $leopards = LeopardsCOD::setCredentials(array(
+    $response = LeopardsCOD::setCredentials(array(
         'api_key' => '<your_api_key>',              // API Key provided by LCS
         'api_password' => '<your_api_password>',    // API Password provided by LCS
         'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
-    ));
-    
-    $response = $leopards->getAllCities();
+    ))->getAllCities();
 }
 ```
 
@@ -72,16 +56,11 @@ public function index()
 use \Developifynet\LeopardsCOD\LeopardsCOD;
 public function index()
 {
-    $leopards = LeopardsCOD::setCredentials(array(
+    $response = LeopardsCOD::setCredentials(array(
         'api_key' => '<your_api_key>',              // API Key provided by LCS
         'api_password' => '<your_api_password>',    // API Password provided by LCS
         'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
-    ));
-    
-    $response = $leopards->bookPacket(array(
-        'api_key' => '<your_api_key>',              // API Key provided by LCS
-        'api_password' => '<your_api_password>',    // API Password provided by LCS
-        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ))->bookPacket(array(
         'booked_packet_weight' => '200',
         'booked_packet_vol_weight_w' => '',
         'booked_packet_vol_weight_h' => '',
@@ -119,16 +98,11 @@ public function index()
 use \Developifynet\LeopardsCOD\LeopardsCOD;
 public function index()
 {
-    $leopards = LeopardsCOD::setCredentials(array(
+    $response = LeopardsCOD::setCredentials(array(
         'api_key' => '<your_api_key>',              // API Key provided by LCS
         'api_password' => '<your_api_password>',    // API Password provided by LCS
         'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
-    ));
-    
-    $response = $leopards->trackPacket(array(
-        'api_key' => '<your_api_key>',              // API Key provided by LCS
-        'api_password' => '<your_api_password>',    // API Password provided by LCS
-        'enable_test_mode' => true,                 // [Optional] default value is 'false', true|false to set mode test or live
+    ))->trackPacket(array(
         'track_numbers' => 'LEXXXXXXXX',            // E.g. 'XXYYYYYYYY' OR 'XXYYYYYYYY,XXYYYYYYYY,XXYYYYYY' 10 Digits each number
      ));
 }

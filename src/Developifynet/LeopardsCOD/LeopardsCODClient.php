@@ -101,8 +101,9 @@ class LeopardsCODClient
      * @return: array|mixed
      */
     public function setCredentials($data = []) {
+        $this->__init($data);
 
-        return $this->__init($data);
+        return $this;
     }
 
     /*
