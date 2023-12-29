@@ -36,7 +36,14 @@ class LeopardsCODClient
      *
      * @var string
      */
-    private $_connect_url = 'http://new.leopardscod.com/webservice/';
+    private $_connect_url = 'https://merchantapi.leopardscourier.com/api/';
+
+    /**
+     * Leopards COD Staging API endpoint
+     *
+     * @var string
+     */
+    private $_connect_stagging_url = 'https://merchantapistaging.leopardscourier.com/api/';
 
 
     /**
@@ -127,7 +134,6 @@ class LeopardsCODClient
      * @return: boolean
      */
     public function isTestMode() {
-
         return $this->_enable_test_mode ? true : false;
     }
 
@@ -156,11 +162,9 @@ class LeopardsCODClient
         }
 
         /**
-         * URL Suffix
+         * Call API Endpoint
          */
-        $url_suffix = $this->isTestMode() ? 'getAllCitiesTest/format/json/' : 'getAllCities/format/json/';
-
-        $call = $this->_callendpoint('GET', $url_suffix);
+        $call = $this->_callendpoint('GET', 'getAllCities/format/json/');
 
         if($call['status']) {
             if($call['response']['status']) {
@@ -251,13 +255,10 @@ class LeopardsCODClient
                 'error_msg' => implode(', ', $error_msg),
             );
         } else {
-
             /**
-             * URL Suffix
+             * Call API Endpoint
              */
-            $url_suffix = $this->isTestMode() ? 'bookPacketTest/format/json/' : 'bookPacket/format/json/';
-
-            $call = $this->_callendpoint('POST', $url_suffix, $packetData);
+            $call = $this->_callendpoint('POST', 'bookPacket/format/json/', $packetData);
 
             if($call['response']['status']) {
                 $response['track_number'] = $call['response']['track_number'];
@@ -350,11 +351,9 @@ class LeopardsCODClient
         } else {
 
             /**
-             * URL Suffix
+             * Call API Endpoint
              */
-            $url_suffix = $this->isTestMode() ? 'trackBookedPacketTest/format/json/' : 'trackBookedPacket/format/json/';
-
-            $call = $this->_callendpoint('GET', $url_suffix, $trackData);
+            $call = $this->_callendpoint('GET', 'trackBookedPacket/format/json/', $trackData);
 
             if($call['response']['status']) {
                 $response['packet_list'] = $call['response']['packet_list'];
@@ -377,7 +376,7 @@ class LeopardsCODClient
      */
     private function _callendpoint($request_type = 'GET', $url_suffix, $data = []) {
 
-        $client = new Client();
+        $client = new Client(['verify' => false]);
 
         $status = true;
         $error_msg = '';
@@ -399,9 +398,17 @@ class LeopardsCODClient
             }
 
             if($request_type == 'GET') {
-                $response = $client->request($request_type, $this->_connect_url . $url_suffix, ['query' => $body]);
+                if($this->isTestMode()) {
+                    $response = $client->request($request_type, $this->_connect_stagging_url . $url_suffix, ['query' => $body]);
+                } else {
+                    $response = $client->request($request_type, $this->_connect_url . $url_suffix, ['query' => $body]);
+                }
             } else {
-                $response = $client->request($request_type, $this->_connect_url . $url_suffix, ['form_params' => $body]);
+                if($this->isTestMode()) {
+                    $response = $client->request($request_type, $this->_connect_stagging_url . $url_suffix, ['form_params' => $body]);
+                } else {
+                    $response = $client->request($request_type, $this->_connect_url . $url_suffix, ['form_params' => $body]);
+                }
             }
 
 
